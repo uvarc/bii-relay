@@ -20,6 +20,14 @@ for inclusion in your source code repository. That repository can trigger any nu
 builds, compiles, file shipping (to someplace like S3), as well as sending an SQS message. The `aws sqs` command in that template
 also shows how to pass along custom MessageAttributes.
 
+In order for Travis to send SQS messages you will need three environment variables in the Travis environment:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_DEFAULT_REGION` - should be set to `us-east-1`.
+
+You will also need to set the URL of the Amazon SQS queue in your `.travis.yml` file.
+
 2. Message Processing - The container in this repository is designed for multiple uses and can be adapted to do a number of things.
 But the central idea is (A) to look for messages on a continual basis (see the run command below); (B) pick up and parse a message
 when one is available in the queue, then do something with that information; and (C) delete the message when B has completed
