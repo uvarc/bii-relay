@@ -34,6 +34,8 @@ if [ "$QCOUNT" -gt 0 ]; then
     --wait-time-seconds 20`;
 
   VERSION=`echo $RAW | /usr/local/bin/jq -r .Messages[0].MessageAttributes.version.StringValue`;
+  PARAMETER1=`echo $RAW | /usr/local/bin/jq -r .Messages[0].MessageAttributes.parameter1.StringValue`;
+  PARAMETER2=`echo $RAW | /usr/local/bin/jq -r .Messages[0].MessageAttributes.parameter2.StringValue`;
 
   # Clone the repository if needed
   # /usr/bin/git clone $GIT_REPO
@@ -46,7 +48,8 @@ if [ "$QCOUNT" -gt 0 ]; then
   # tar -xzvf v$VERSION.tar.gz
   # ... do things ...
 
-  # PROD :: Submit a SLURM job using these values
+  # PROD :: Submit a SLURM job using these values by calling a remote script on Rivanna. Pass additional parameters
+  # if needed.
   RCMD+="/bin/bash "
   RCMD+="$RIVANNA_SCRIPT"
   /usr/bin/ssh -oStrictHostKeyChecking=no -i ~/.ssh/id_rsa $USERID@rivanna.hpc.virginia.edu $RCMD $VERSION

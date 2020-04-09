@@ -5,7 +5,7 @@ A simple container to trigger a SLURM job in Rivanna whenever a GitHub repoistor
 ## Pull Architecture
 
 To link GitHub and Rivanna, this architecture uses a messaging queueing service, Amazon SQS. Activities in GitHub trigger
-a message to be published to an SQS queue. Messages in the queue are then picked up by a constantly cycling container in
+a message to be send to an SQS queue. Messages in the queue are then picked up by a constantly cycling container in
 DCOS that is looking for messages. Upon receipt of a message, it gathers specific variables from the message and acts
 accordingly.
 
@@ -14,7 +14,7 @@ A pull or "polling" design is useful here for two reasons:
 - GitHub and Travis-CI sit outside of the UVA networks and cannot directly reach a Rivanna interactive node.
 - Should Rivanna be offline (maintenance, updates, etc.), messages in the queue continue to accumulate and can be processed later.
 
-## 1. Publishing to SQS
+## 1. Sending Messages to SQS
 
 Travis-CI is an easy solution for this step since it can act programmatically with elements of your GitHub
 repository and variables related to it (version, committer, commit hash, branch, tag, release, etc.) See the included `travis.yml` file
@@ -84,3 +84,9 @@ Several options are stubbed out in the `run.sh` script here. A few options:
 - Fetch a release.
 - Parse variables from GitHub or SQS MessageAttributes.
 - Submit a SLURM job via SSH.
+
+## 3. CRON Behavior
+
+An alternate version of this design would be to send SQS messages from a source other than GitHub. For example, in DCOS a Job
+can be set up that sends messages on an exact timer, i.e. at 2am every day. From there the worker container described above will
+pick up the message as usual and submit SLURM jobs, etc.
