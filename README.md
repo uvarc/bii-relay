@@ -15,9 +15,10 @@ A pull or "polling" design is useful here for two reasons:
 - Should Rivanna be offline (maintenance, updates, etc.), messages in the queue continue to accumulate and can be processed later.
 
 1. Publishing to SQS - Travis-CI is an easy solution for this step since it can act programmatically with elements of your GitHub
-repository and variables related to it (version, committer, commit hash, branch, release, etc.) See the included `travis.yml` file
+repository and variables related to it (version, committer, commit hash, branch, tag, release, etc.) See the included `travis.yml` file
 for inclusion in your source code repository. That repository can trigger any number of actions using Travis, such as unit tests,
-builds, compiles, file shipping (to someplace like S3), as well as sending an SQS message.
+builds, compiles, file shipping (to someplace like S3), as well as sending an SQS message. The `aws sqs` command in that template
+also shows how to pass along custom MessageAttributes.
 
 2. Message Processing - The container in this repository is designed for multiple uses and can be adapted to do a number of things.
 But the central idea is (A) to look for messages on a continual basis (see the run command below); (B) pick up and parse a message

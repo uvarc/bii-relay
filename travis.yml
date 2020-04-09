@@ -1,0 +1,19 @@
+language: bash
+
+services:
+  - docker
+
+before_install:
+  - sudo pip install --upgrade pip
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+
+install:
+    aws sqs send-message --queue-url 'https://queue.amazonaws.com/123456789012/queue-name' --message-body 'release' --message-attributes '{"item1": {"StringValue":"this-is-value-1","DataType":"String"}, "item2": {"StringValue":"this-is-value-2","DataType":"String"}, "item3": {"StringValue":"this-is-value-3","DataType":"String"}}' || exit 1;
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+    recipients:
+    - mst3k@virginia.edu
