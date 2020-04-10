@@ -14,6 +14,8 @@ A pull or "polling" design is useful here for two reasons:
 - GitHub and Travis-CI sit outside of the UVA networks and cannot directly reach a Rivanna interactive node.
 - Should Rivanna be offline (maintenance, updates, etc.), messages in the queue continue to accumulate and can be processed later.
 
+![Push vs. Pull Design](tight-vs-loose-coupling.png)
+
 ## 1. Sending Messages to SQS
 
 Travis-CI is an easy solution for this step since it can act programmatically with elements of your GitHub
